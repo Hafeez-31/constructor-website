@@ -1,0 +1,94 @@
+.hero {
+    width: 100%;
+    height: 100vh;
+    background: url('jcb.png') center/cover no-repeat;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+}
+
+.content {
+    background: rgba(0, 0, 0, 0.2);
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    top: 0;
+    left: 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    color: #fff;
+    text-align: center;
+}
+
+.content h1 {
+    font-size: 42px;
+    font-weight: 800;
+    color: rgba(230, 230, 21, 0.9);
+    margin-bottom: 10px;
+}
+
+.content p {
+    font-size: 15px;
+    margin-bottom: 30px;
+}
+
+.buttons {
+    display: flex;
+    gap: 15px;
+    justify-content: center;
+}
+
+.btn {
+    padding: 12px 25px;
+    border: 3px solid #fff;
+    cursor: pointer;
+    font-size: 15px;
+    background: transparent;
+}
+
+.learn {
+    color: #fff;
+}
+
+.touch {
+    font-weight: bold;
+    background: #f7c308;
+    border-color: #f7c308;
+    color: #000;
+}
+
+.features {
+    width: 100%;
+    background: #f7f7f7;
+    padding: 32px 0;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    text-align: center;
+    margin-top: 143vh;
+}
+
+.feature {
+    padding: 20px 30px;
+}
+
+.feature-icon {
+    font-size: 50px;
+    margin-bottom: 20px;
+    color: #000;
+}
+
+.feature h6 {
+    font-size: 10px;
+    margin-bottom: 10px;
+}
+
+.feature p {
+    font-size: 10px;
+    color: gray;
+    line-height: 17px;
+}
