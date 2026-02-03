@@ -1,15 +1,24 @@
-import React from "react";
+import React, { useState } from "react";
 import './navbar.css'
 import { FaMapMarkerAlt, FaEnvelope, FaPhoneAlt, FaSearch } from "react-icons/fa";
 import constructLogo from "../../assets/images/navimg/constructlogo.png"
 
 const Navbar = ({ scrollTo, refs }) => {
 
+    const [openSearch, setOpenSearch] = useState(false);
+    const [menuOpen, setMenuOpen] = useState(false);
+
     const scrollToSection = (section) => {
         const doScroll = () => {
             if (section === "home") scrollTo(refs.homeRef);
+            else if (section === "services") scrollTo(refs.servicesRef);
+            else if (section === "offer") scrollTo(refs.offerRef);
             else if (section === "project") scrollTo(refs.projectRef);
+            else if (section === "aboutus") scrollTo(refs.aboutusRef);
             else if (section === "contact") scrollTo(refs.contactRef);
+
+            setMenuOpen(false);
+
         };
 
         if (location.pathname === "/") {
@@ -40,16 +49,46 @@ const Navbar = ({ scrollTo, refs }) => {
                         <p>Construction & Design Services</p>
                     </div>
                 </div>
-                <ul className="nav-links">
+                <ul className={`nav-links ${menuOpen ? "open" : ""}`}>
                     <li onClick={() => scrollToSection("home")}>HOME</li>
+                    <li onClick={() => scrollToSection("services")}>SERVICES</li>
+                    <li onClick={() => scrollToSection("offer")}>OFFERS</li>
                     <li onClick={() => scrollToSection("project")}>PROJECTS</li>
-                    <li>SERVICES</li>
-                    <li>ABOUT US</li>
-                    <li>PAGES</li>
+                    <li onClick={() => scrollToSection("aboutus")}>ABOUT US</li>
                     <li onClick={() => scrollToSection("contact")}>CONTACT</li>
-                    <li><FaSearch className='search-icon' /></li>
+                    <li className="search-wrapper">
+                        <FaSearch
+                            className="search-icon"
+                            onClick={() => setOpenSearch(prev => !prev)}
+                        />
+                        <div className={`search-label ${openSearch ? "open" : ""}`}>
+                            <input type="text" placeholder="Search..." />
+                        </div>
+                    </li>
                 </ul>
             </nav>
+            <div className="icon-container">
+                <span className="search-wrapper">
+                    <FaSearch
+                        className="search-icon"
+                        onClick={() => setOpenSearch(prev => !prev)}
+                    />
+                    <div className={`search-label ${openSearch ? "open" : ""}`}>
+                        <input type="text" placeholder="Search..." />
+                    </div>
+                </span>
+                {!menuOpen ? (
+                    <span className="hamburger" onClick={() => setMenuOpen(true)}>
+                        <span className="ham-line"></span>
+                        <span className="ham-line"></span>
+                        <span className="ham-line"></span>
+                    </span>
+                ) : (
+                    <span className="close-btn" onClick={() => setMenuOpen(false)}>
+                        ✕
+                    </span>
+                )}
+            </div>
         </div>
     )
 }
