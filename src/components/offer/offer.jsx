@@ -17,40 +17,51 @@ const Offer = forwardRef((_, ref) => {
     const [hasAnimated, setHasAnimated] = useState(false); 
 
     useEffect(() => {
-        if (!ref?.current) return; 
+  if (!ref?.current) return;
 
-        const observer = new IntersectionObserver(
-            (entries) => {
-                entries.forEach(entry => {
-                    if (entry.isIntersecting && !hasAnimated) {
-                        setHasAnimated(true);
+  const observer = new IntersectionObserver(
+    (entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting && !hasAnimated) {
+          setHasAnimated(true);
 
-                        const duration = 2000; 
-                        const intervalTime = 20; 
-                        const steps = duration / intervalTime;
+          const duration = 2000;
+          const intervalTime = 20;
+          const steps = duration / intervalTime;
 
-                        const intervals = stats.map((stat, idx) => {
-                            const increment = stat.number / steps;
+          const intervals = stats.map((stat, idx) => {
+            let currentStep = 0;
+            const increment = stat.number / steps;
 
-                            return setInterval(() => {
-                                setCounts(prev => {
-                                    const newCounts = [...prev];
-                                    if (newCounts[idx] < stat.number) {
-                                        newCounts[idx] = Math.min(newCounts[idx] + increment, stat.number);
-                                    }
-                                    return newCounts;
-                                });
-                            }, intervalTime);
-                        });
-                        setTimeout(() => intervals.forEach(i => clearInterval(i)), duration + 50);
-                    }
-                });
-            },
-            { threshold: 0.5 }
-        );
-        observer.observe(ref.current);
-        return () => observer.disconnect();
-    }, [hasAnimated, stats, ref]);
+            return setInterval(() => {
+              currentStep++;
+
+              setCounts(prev => {
+                const newCounts = [...prev];
+                newCounts[idx] = Math.min(
+                  Math.round(currentStep * increment),
+                  stat.number
+                );
+                return newCounts;
+              });
+            }, intervalTime);
+          });
+
+          // 🔒 FORCE final values (THIS is the real fix)
+          setTimeout(() => {
+            intervals.forEach(i => clearInterval(i));
+            setCounts(stats.map(stat => stat.number));
+          }, duration + 50);
+        }
+      });
+    },
+    { threshold: 0.5 }
+  );
+
+  observer.observe(ref.current);
+  return () => observer.disconnect();
+}, [hasAnimated, stats, ref]);
+
     return (
         <div className="offers" ref={ref}>
             <h2>What We Offer</h2>
@@ -76,7 +87,7 @@ const Offer = forwardRef((_, ref) => {
             <div className="members">
                 {stats.map((stat, idx) => (
                     <div className="numbers" key={stat.id}>
-                        <h3>{Math.floor(counts[idx])}{stat.suffix}</h3> 
+                        <h3>{counts[idx]}{stat.suffix}</h3>
                         <p>{stat.label}</p>
                     </div>
                 ))}
